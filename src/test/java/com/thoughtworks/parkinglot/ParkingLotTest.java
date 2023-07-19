@@ -2,10 +2,13 @@ package com.thoughtworks.parkinglot;
 
 import com.thoughtworks.parkinglot.exceptions.AlreadyParkedException;
 import com.thoughtworks.parkinglot.exceptions.ParkingLotFullException;
+import com.thoughtworks.parkinglot.exceptions.VehicleNotFoundException;
+
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ParkingLotTest {
@@ -39,5 +42,16 @@ public class ParkingLotTest {
         parkingLot.park(car);
 
         assertThrows(AlreadyParkedException.class, () -> parkingLot.park(car));
+    }
+
+    @Test
+    void shouldUnparkWhenReqired() throws ParkingLotFullException, AlreadyParkedException, VehicleNotFoundException {
+        ParkingLot parkingLot = new ParkingLot(2);
+        Parkable car = new Car();
+        parkingLot.park(car);
+
+        parkingLot.unpark(car);
+
+        assertFalse(parkingLot.isParked(car));;
     }
 }
